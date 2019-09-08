@@ -20,8 +20,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 let prof = null;
 
-var HEROKU_CLIENT_ID = "220d8473-396e-4a1f-be88-e14d2761677e";
-var HEROKU_CLIENT_SECRET = "a3097cad-1f32-4dc9-898e-fcf079f64ea4";
+var HEROKU_CLIENT_ID = process.env.HEROKU_CLIENT_ID;
+var HEROKU_CLIENT_SECRET = process.env.HEROKU_CLIENT_SECRET;
 const PORT = process.env.PORT || 3000;
 
 passport.use(
@@ -39,6 +39,7 @@ passport.use(
 );
 
 //authenticate to heroku
+
 app.get("/auth/heroku", passport.authenticate("heroku"));
 //handle response
 app.get(
