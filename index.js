@@ -22,6 +22,7 @@ app.get("/userData", function(req, res) {
 });
 
 app.get("/auth", function(req, res) {
+  console.log(HEROKU_OAUTH_ID);
   // res.send("success loggedzxzczxc in");
   res.send(
     `https://id.heroku.com/oauth/authorize?client_id=${HEROKU_OAUTH_ID}&response_type=code&scope=identity&state=mytestapp`
