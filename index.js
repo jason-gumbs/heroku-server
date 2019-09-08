@@ -21,6 +21,7 @@ app.use(passport.session());
 let prof = null;
 
 var HEROKU_CLIENT_ID = process.env.HEROKU_CLIENT_ID;
+
 var HEROKU_CLIENT_SECRET = process.env.HEROKU_CLIENT_SECRET;
 const PORT = process.env.PORT || 3000;
 
@@ -29,7 +30,7 @@ passport.use(
     {
       clientID: HEROKU_CLIENT_ID,
       clientSecret: HEROKU_CLIENT_SECRET,
-      callbackURL: "http://127.0.0.1:3000/auth/heroku/callback"
+      callbackURL: "https://passport-upwork.herokuapp.com/auth/heroku/callback"
     },
     function(accessToken, refreshToken, profile, done) {
       prof = profile;
@@ -67,7 +68,7 @@ app.get("/error", function(req, res) {
 });
 
 app.get("/", function(req, res) {
-  res.send("success logged in");
+  res.send("success loggedzxzczxc in");
 });
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
