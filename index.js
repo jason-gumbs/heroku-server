@@ -31,18 +31,7 @@ app.get("/auth", function(req, res) {
 app.get("/env", function(req, res) {
   var HEROKU_OAUTH_ID = req.query.id;
   var HEROKU_OAUTH_SECRET = req.query.secret;
-
-  axios
-    .post(
-      `https://id.heroku.com/oauth/token?grant_type=authorization_code&code=${token}&client_secret=${HEROKU_OAUTH_SECRET}`
-    )
-    .then(function(response) {
-      userData = response.data;
-      res.redirect("http://localhost:3000/");
-    })
-    .catch(function(error) {
-      res.send(error);
-    });
+  res.send("ok");
 });
 
 app.get("/token", function(req, res) {
