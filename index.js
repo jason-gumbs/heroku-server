@@ -12,9 +12,9 @@ app.use(cors());
 
 let userData = null;
 
-var HEROKU_OAUTH_ID;
+var HEROKU_OAUTH_ID = "";
 
-var HEROKU_OAUTH_SECRET;
+var HEROKU_OAUTH_SECRET = "";
 const PORT = process.env.PORT || 5000;
 
 app.get("/userData", function(req, res) {
@@ -29,8 +29,8 @@ app.get("/auth", function(req, res) {
 });
 
 app.get("/env", function(req, res) {
-  var HEROKU_OAUTH_ID = req.query.id;
-  var HEROKU_OAUTH_SECRET = req.query.secret;
+  HEROKU_OAUTH_ID = req.query.id;
+  HEROKU_OAUTH_SECRET = req.query.secret;
   res.send("ok");
 });
 
