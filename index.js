@@ -12,9 +12,9 @@ app.use(cors());
 
 let userData = null;
 
-var HEROKU_OAUTH_ID = process.env.HEROKU_OAUTH_ID;
+var HEROKU_OAUTH_ID;
 
-var HEROKU_OAUTH_SECRET = process.env.HEROKU_OAUTH_SECRET;
+var HEROKU_OAUTH_SECRET;
 const PORT = process.env.PORT || 5000;
 
 app.get("/userData", function(req, res) {
@@ -28,8 +28,25 @@ app.get("/auth", function(req, res) {
   );
 });
 
+app.get("/env", function(req, res) {
+  var HEROKU_OAUTH_ID = req.query.id;
+  var HEROKU_OAUTH_SECRET = req.query.secret;
+
+  axios
+    .post(
+      `https://id.heroku.com/oauth/token?grant_type=authorization_code&code=${token}&client_secret=${HEROKU_OAUTH_SECRET}`
+    )
+    .then(function(response) {
+      userData = response.data;
+      res.redirect("http://localhost:3000/");
+    })
+    .catch(function(error) {
+      res.send(error);
+    });
+});
+
 app.get("/token", function(req, res) {
-  var token = req.query.code || "edd2458f-2e10-4a7b-afac-0c0e77a6e520";
+  var token = req.query.code;
   axios
     .post(
       `https://id.heroku.com/oauth/token?grant_type=authorization_code&code=${token}&client_secret=${HEROKU_OAUTH_SECRET}`
