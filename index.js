@@ -10,24 +10,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-let prof = null;
+let userData = null;
 
-var HEROKU_OAUTH_ID = "5f786f89-6572-447c-938e-e43329e74777";
-var HEROKU_OAUTH_SECRET = "14051aa2-ad87-4ebb-add9-768a3e79b34d";
+var HEROKU_OAUTH_ID = process.env.HEROKU_OAUTH_ID;
 
-var HEROKU_CLIENT_ID =
-  process.env.HEROKU_CLIENT_ID || "8063f075-1e7f-4ff7-a23f-f50df3f45128";
-
-var HEROKU_CLIENT_SECRET =
-  process.env.HEROKU_CLIENT_SECRET || "a3097cad-1f32-4dc9-898e-fcf079f64ea4";
+var HEROKU_OAUTH_SECRET = process.env.HEROKU_OAUTH_SECRET;
 const PORT = process.env.PORT || 5000;
 
-app.get("/success", function(req, res) {
-  res.send(prof);
-});
-
-app.get("/error", function(req, res) {
-  res.send("error logged in");
+app.get("/userData", function(req, res) {
+  res.send(userData);
 });
 
 app.get("/auth", function(req, res) {
@@ -37,28 +28,29 @@ app.get("/auth", function(req, res) {
   );
 });
 
-app.post("/token", function(req, res) {
-  var token = req.body.token || "edd2458f-2e10-4a7b-afac-0c0e77a6e520";
+app.get("/token", function(req, res) {
+  var token = req.query.code || "edd2458f-2e10-4a7b-afac-0c0e77a6e520";
   axios
     .post(
       `https://id.heroku.com/oauth/token?grant_type=authorization_code&code=${token}&client_secret=${HEROKU_OAUTH_SECRET}`
     )
     .then(function(response) {
-      res.send(response);
+      userData = response.data;
+      res.redirect("http://localhost:3000/");
     })
     .catch(function(error) {
       res.send(error);
     });
 });
 
-app.post("/refresh", function(req, res) {
-  var token = req.body.token;
+app.get("/refresh", function(req, res) {
+  var refresh_token = req.query.refresh_token;
   axios
     .post(
-      `https://id.heroku.com/oauth/token?grant_type=refresh_token&refresh_token=${token}&client_secret=${HEROKU_OAUTH_SECRET}`
+      `https://id.heroku.com/oauth/token?grant_type=refresh_token&refresh_token=${refresh_token}&client_secret=${HEROKU_OAUTH_SECRET}`
     )
     .then(function(response) {
-      res.send(response);
+      res.send(response.data);
     })
     .catch(function(error) {
       res.send(error);
